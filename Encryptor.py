@@ -4,6 +4,9 @@ from Crypto.Cipher import PKCS1_OAEP
 from Crypto import Random
 
 localkeys = [ ]
+message = " "
+
+
 
 def rsakeygen(bitforce, namefile):
     global rsabackend, prkey, pukey, localkeys
@@ -25,13 +28,26 @@ def rsakeygen(bitforce, namefile):
 
 
 
-# Enter the message to be encrypted
-message=input("Enter your text: ")
+
+choise=input("Import the text to encrypt from a file or input? (y/n):  ")
+
+if choise.lower() == 'y':
+     print("Loading..")
+     with open("secretext.txt", 'r') as f:
+          message = f.read()
+     print("Loaded")
+
+else:
+     # Enter the message to be encrypted
+     message=input("Enter your text: ")
+     
+
+
 
 
 # Encrypt the message with two steps.
 print("Genkey 1")
-rsakeygen(2048, "rsa1.txt")
+rsakeygen(4096, "rsa1.txt")
 print("Generated")
 cipher = PKCS1_OAEP.new(pukey)
 encr1 = cipher.encrypt(message.encode())
@@ -39,7 +55,7 @@ print("Encrypted step 1")
 
 
 print("Genkey 2")
-rsakeygen(4096, "rsa2.txt")
+rsakeygen(8196, "rsa2.txt")
 print("Generated")
 cipher = PKCS1_OAEP.new(pukey)
 encr2 = cipher.encrypt(encr1)
